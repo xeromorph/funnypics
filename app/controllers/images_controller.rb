@@ -80,4 +80,8 @@ class ImagesController < ApplicationController
       format.json { head :ok }
     end
   end
+  
+  def import
+    # TODO: implement bulk image import from a predefined folder   
+  end
 end
