@@ -1,7 +1,9 @@
 <h1>Listing images</h1>
 
+<%= will_paginate %>
 <table>
   <tr>
+    <th></th>
     <th>Description</th>
     <th></th>
     <th></th>
@@ -19,6 +21,7 @@
 <% end %>
 </table>
 
+<%= will_paginate %>
 <br />
 
 <%= link_to 'New Image', new_image_path %>
