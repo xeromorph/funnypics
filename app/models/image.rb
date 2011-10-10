@@ -31,8 +31,8 @@ class Image < ActiveRecord::Base
   private
   def assign_tags
     if @tag_names
-      self.tags = @tag_names.split(/,\s*/).map do |tname|
-        Tag.find_or_initialize_by_name(tname)
+      self.tags = @tag_names.split(/,/).map do |tname|
+        Tag.find_or_initialize_by_name(tname.strip) if tname.strip.present?
       end
     end
   end
