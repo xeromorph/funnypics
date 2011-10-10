@@ -3,7 +3,7 @@ class ImagesController < ApplicationController
   # GET /images.json
   def index
     #@images = Image.all
-    @images = Image.paginate(:page => params[:page], :per_page => 10)
+    @images = Image.paginate(:page => params[:page], :per_page => 5)
 
     respond_to do |format|
       format.html # index.html.erb
