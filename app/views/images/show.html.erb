@@ -1,13 +1,19 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <%- #link_to image_tag(@image.img.url(:thumb)), @image.img.url -%>
-  <%= image_tag @image.img.url %>
+  <%= link_to image_tag(@image.img.url), @image.next %>
+  <%- #image_tag @image.img.url %>
   <br>
   <b>Description:</b>
   <%= @image.description %>
+  <% if @image.tag_names.present? %>
+  <br>
+  <b>Tags:</b>
+  <%= @image.tag_names %>
+  <% end %>
 </p>
 
-
+<%= link_to 'Prev', @image.prev %>
+<br>
 <%= link_to 'Edit', edit_image_path(@image) %> |
 <%= link_to 'Back', images_path %>
