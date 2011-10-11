@@ -13,7 +13,7 @@ class Image < ActiveRecord::Base
                           :path => ":rails_root/public/assets/images/:style/:hash.:extension"
 
   validates_presence_of :description
-  validates_presence_of :tags
+#  validates_presence_of :tags
   validates_attachment_presence :img
   validates_attachment_size :img, :less_than => 10.megabytes
   validates_attachment_content_type :img, :content_type => ['image/jpeg', 'image/pjpeg', 'image/jpg', 'image/png', 'image/x-png', 'image/gif']
@@ -23,18 +23,18 @@ class Image < ActiveRecord::Base
   end
 
   def next
-    Image.first(:conditions => ['id > ?', self.id], :order => 'id ASC') || Image.first
+    Image.first(:conditions => ['id > ?', self.id], :order => 'id ASC') || Image.first(:order => 'id ASC')
   end
   
   def prev
-    Image.last(:conditions => ['id < ?', self.id], :order => 'id ASC') || Image.last
+    Image.last(:conditions => ['id < ?', self.id], :order => 'id ASC') || Image.last(:order => 'id ASC')
   end
 
   private
   def assign_tags
-    return if @tag_names.blank? 
     self.tags = @tag_names.strip.downcase.split(/\s*,\s*/).map do |tname|
       Tag.find_or_initialize_by_name(tname) if tname.present?
     end
+    errors[:base] << "at least one tag must be specified" unless self.tags.any? 
   end
 end
