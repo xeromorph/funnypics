@@ -20,7 +20,7 @@
     <%= f.text_area :description %>
   </div>
  <%- #if params[:action] == 'new' or 'edit' -%>
- <% if params[:action] == 'new' %>
+ <% if %w{new create}.include? params[:action] %>
   <div class="field">
     <%= f.label :img %><br />
     <%= f.file_field :img %>
