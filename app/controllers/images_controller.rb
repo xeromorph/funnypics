@@ -3,8 +3,11 @@ class ImagesController < ApplicationController
   # GET /images.json
   def index
     #@images = Image.all
-    @images = Image.paginate(:page => params[:page], :per_page => 5)
-
+    if params[:tag].present?
+      @images = Image.where(["tags.name = ?",params[:tag]]).paginate(:include => :tags, :page => params[:page], :per_page => 5)
+    else
+      @images = Image.paginate(:include => :tags, :page => params[:page], :per_page => 5)  
+    end
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @images }
