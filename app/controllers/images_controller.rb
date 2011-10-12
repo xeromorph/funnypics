@@ -6,7 +6,7 @@ class ImagesController < ApplicationController
     if params[:tag].present?
       @images = Image.where(["tags.name = ?",params[:tag]]).paginate(:include => :tags, :page => params[:page], :per_page => 5)
     else
-      @images = Image.paginate(:include => :tags, :page => params[:page], :per_page => 5)  
+      @images = Image.paginate(:include => :tags, :page => params[:page], :per_page => 5)
     end
     respond_to do |format|
       format.html # index.html.erb
@@ -18,7 +18,7 @@ class ImagesController < ApplicationController
   # GET /images/1.json
   def show
     @image = Image.find(params[:id])
-
+    
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @image }

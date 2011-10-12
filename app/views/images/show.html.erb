@@ -1,7 +1,7 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <%= link_to image_tag(@image.img.url), @image.next %>
+  <%= link_to image_tag(@image.img.url), image_path(@image.next(params[:tag]), :tag => params[:tag]) %>
   <%- #image_tag @image.img.url %>
   <br>
   <b>Description:</b>
@@ -13,7 +13,7 @@
   <% end %>
 </p>
 
-<%= link_to 'Prev', @image.prev %>
+<%= link_to 'Prev', image_path(@image.prev(params[:tag]), :tag => params[:tag]) %>
 <br>
 <%= link_to 'Edit', edit_image_path(@image) %> |
 <%= link_to 'Back', images_path %>
