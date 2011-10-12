@@ -22,12 +22,20 @@ class Image < ActiveRecord::Base
     @tag_names || tags.map(&:name).join(', ')
   end
 
-  def next
-    Image.first(:conditions => ['id > ?', self.id], :order => 'id ASC') || Image.first(:order => 'id ASC')
+  def next(tagname)
+    if tagname.present?
+      Image.where(["tags.name IS ? and images.id > ?",tagname,self.id]).find(:first, :include => :tags, :order => 'images.id ASC') || Image.where(["tags.name IS ?",tagname]).find(:first, :include => :tags, :order => 'images.id ASC')
+    else
+      Image.where(["images.id > ?",self.id]).find(:first, :order => 'images.id ASC') || Image.find(:first, :order => 'images.id ASC')
+    end
   end
   
-  def prev
-    Image.last(:conditions => ['id < ?', self.id], :order => 'id ASC') || Image.last(:order => 'id ASC')
+  def prev(tagname)
+    if tagname.present?
+      Image.where(["tags.name IS ? and images.id < ?",tagname,self.id]).find(:last, :include => :tags, :order => 'images.id ASC') || Image.where(["tags.name IS ?",tagname]).find(:last, :include => :tags, :order => 'images.id ASC')
+    else
+      Image.where(["images.id < ?",self.id]).find(:last, :order => 'images.id ASC') || Image.find(:last, :order => 'images.id ASC')
+    end
   end
 
   private
