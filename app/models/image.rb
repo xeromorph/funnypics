@@ -18,24 +18,27 @@ class Image < ActiveRecord::Base
   validates_attachment_size :img, :less_than => 10.megabytes
   validates_attachment_content_type :img, :content_type => ['image/jpeg', 'image/pjpeg', 'image/jpg', 'image/png', 'image/x-png', 'image/gif']
   
+  #scopes
+  scope :recent, order("images.created_at desc")
+
   def tag_names
     @tag_names || tags.map(&:name).join(', ')
   end
 
-  def next(tagname)
-    if tagname.present?
-      Image.where(["tags.name IS ? and images.id > ?",tagname,self.id]).find(:first, :include => :tags, :order => 'images.id ASC') || Image.where(["tags.name IS ?",tagname]).find(:first, :include => :tags, :order => 'images.id ASC')
-    else
-      Image.where(["images.id > ?",self.id]).find(:first, :order => 'images.id ASC') || Image.find(:first, :order => 'images.id ASC')
+  def next(tagname = nil)
+    @next = Image.recent
+    if tagname
+      @next = @next.includes(:tags).where("tags.name = ?",tagname)
     end
+    @next.where("images.created_at < ?",self.created_at).first || @next.first
   end
   
-  def prev(tagname)
-    if tagname.present?
-      Image.where(["tags.name IS ? and images.id < ?",tagname,self.id]).find(:last, :include => :tags, :order => 'images.id ASC') || Image.where(["tags.name IS ?",tagname]).find(:last, :include => :tags, :order => 'images.id ASC')
-    else
-      Image.where(["images.id < ?",self.id]).find(:last, :order => 'images.id ASC') || Image.find(:last, :order => 'images.id ASC')
+  def prev(tagname = nil)
+    @prev = Image.recent
+    if tagname
+      @prev = @prev.includes(:tags).where("tags.name = ?",tagname)
     end
+    @prev.where("images.created_at > ?",self.created_at).last || @prev.last
   end
 
   private
