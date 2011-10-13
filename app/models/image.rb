@@ -20,6 +20,9 @@ class Image < ActiveRecord::Base
   
   #scopes
   scope :recent, order("images.created_at desc")
+  scope :tagged, lambda { |tag| includes(:tags).where("tags.name = ?",tag) }
+  scope :before, lambda { |time| where("images.created_at < ?",time) }
+  scope :after, lambda { |time| where("images.created_at > ?",time) }
 
   def tag_names
     @tag_names || tags.map(&:name).join(', ')
@@ -28,17 +31,17 @@ class Image < ActiveRecord::Base
   def next(tagname = nil)
     @next = Image.recent
     if tagname
-      @next = @next.includes(:tags).where("tags.name = ?",tagname)
+      @next = @next.tagged(tagname)
     end
-    @next.where("images.created_at < ?",self.created_at).first || @next.first
+    @next.before(self.created_at).first || @next.first
   end
   
   def prev(tagname = nil)
     @prev = Image.recent
     if tagname
-      @prev = @prev.includes(:tags).where("tags.name = ?",tagname)
+      @prev = @prev.tagged(tagname)
     end
-    @prev.where("images.created_at > ?",self.created_at).last || @prev.last
+    @prev.after(self.created_at).last || @prev.last
   end
 
   private
