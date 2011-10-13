@@ -1,13 +1,19 @@
 class ImagesController < ApplicationController
+  before_filter :params_clean
+
+  
   # GET /images
   # GET /images.json
   def index
-    #@images = Image.all
-    if params[:tag].present?
-      @images = Image.where(["tags.name = ?",params[:tag]]).paginate(:include => :tags, :page => params[:page], :per_page => 5)
-    else
-      @images = Image.paginate(:include => :tags, :page => params[:page], :per_page => 5)
+    @images = Image.includes(:tags).order("images.created_at desc")
+    if params[:tag]
+      @images = @images.where(["tags.name = ?",params[:tag]])
     end
+    @images = @images.paginate(:page => params[:page], :per_page => 5)
+    #.paginate(:include => :tags, :page => params[:page], :per_page => 5)
+    #else
+    # @images = Image.paginate(:include => :tags, :page => params[:page], :per_page => 5)
+    #end
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @images }
@@ -87,5 +93,11 @@ class ImagesController < ApplicationController
   
   def import
     # TODO: implement bulk image import from a predefined folder   
+  end
+
+  private
+  #params_clean: delete blank params items
+  def params_clean
+    params.delete_if {|k,v| v.blank?}
   end
 end
