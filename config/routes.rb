@@ -1,5 +1,7 @@
 Funnypics::Application.routes.draw do
-  resources :images
+  resources :images do
+    post 'import', :on => :collection
+  end
   resources :tags
 
   # The priority is based upon order of creation:

@@ -1,7 +1,6 @@
 class ImagesController < ApplicationController
   before_filter :params_clean
 
-  
   # GET /images
   # GET /images.json
   def index
@@ -92,7 +91,31 @@ class ImagesController < ApplicationController
   end
   
   def import
-    # TODO: implement bulk image import from a predefined folder   
+    # TODO: implement bulk image import from a predefined folder  
+    require 'fileutils'
+    require 'find'
+    image_count = 0
+    import_dir = "./pub/to_import/"
+    imported_dir = "./pub/imported/"
+    failed_dir = "./pub/failed/"
+    Find.find(import_dir) do |file|
+      next unless File.file?(file) and file =~ /.*\.(jpe?g|gif|png)/i
+      relative_path = file.sub(import_dir,"")
+      relative_dir = File.dirname(relative_path)
+      image = Image.new
+      image.img = File.open(file)
+      image.description = "mass imported file"
+      image.tag_names = relative_dir.scan(/\w+/i).join(",")
+      if image.save
+        image_count += 1
+        relative_path.insert(0,imported_dir)
+      else
+        relative_path.insert(0,failed_dir)
+      end
+      FileUtils.makedirs(File.dirname(relative_path))
+      FileUtils.mv(file,relative_path)
+    end
+    redirect_to images_path, :notice => "#{image_count} images were mass imported"
   end
 
   private

@@ -1,3 +1,4 @@
+<p id="notice"><%= notice %></p>
 <h1>Listing images</h1>
 
 <%= will_paginate %>
@@ -27,3 +28,4 @@
 <br />
 
 <%= link_to 'New Image', new_image_path %>
+<%= button_to "Import", :action => :import %>
