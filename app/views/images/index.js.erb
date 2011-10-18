@@ -1,0 +1,3 @@
+$('#images_t').html('<%= escape_javascript render(@images) %>');
+$('#paginator_top').html('<%= escape_javascript(paginate(@images, :remote => true).to_s) %>');
+$('#paginator_bot').html('<%= escape_javascript(paginate(@images, :remote => true).to_s) %>');

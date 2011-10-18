@@ -4,17 +4,18 @@ class ImagesController < ApplicationController
   # GET /images
   # GET /images.json
   def index
-    @images = Image.includes(:tags).order("images.created_at desc")
+    @images = Image.includes(:tags).page(params[:page]).order("images.created_at desc")
     if params[:tag]
       @images = @images.where(["tags.name = ?",params[:tag]])
     end
-    @images = @images.paginate(:page => params[:page], :per_page => 5)
+    #@images = @images
     #.paginate(:include => :tags, :page => params[:page], :per_page => 5)
     #else
     # @images = Image.paginate(:include => :tags, :page => params[:page], :per_page => 5)
     #end
     respond_to do |format|
       format.html # index.html.erb
+      format.js
       format.json { render json: @images }
     end
   end

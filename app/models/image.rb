@@ -24,6 +24,9 @@ class Image < ActiveRecord::Base
   scope :before, lambda { |time| where("images.created_at < ?",time) }
   scope :after, lambda { |time| where("images.created_at > ?",time) }
 
+  #per_page
+  #self.per_page = 5
+  paginates_per 5
   def tag_names
     @tag_names || tags.map(&:name).join(', ')
   end

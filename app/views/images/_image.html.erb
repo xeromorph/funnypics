@@ -1,0 +1,8 @@
+<tr>
+  <td><%= link_to image_tag(image.img.url(:thumb)), image_path(image, :tag => params[:tag]) %></td>
+  <td><%= image.description %></td>
+  <td><%= image.tag_names %></td>
+  <td><%= link_to 'Show', image %></td>
+  <td><%= link_to 'Edit', edit_image_path(image) %></td>
+  <td><%= link_to 'Destroy', image, confirm: 'Are you sure?', method: :delete %></td>
+</tr>
