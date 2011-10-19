@@ -23,11 +23,16 @@ class ImagesController < ApplicationController
   # GET /images/1
   # GET /images/1.json
   def show
-    @image = Image.find(params[:id])
+#    @image = Image.find(params[:id])
+    @image = Image.find_by_id(params[:id])
     
     respond_to do |format|
+     if @image
       format.html # show.html.erb
       format.json { render json: @image }
+     else
+     format.html {redirect_to images_url, notice: 'Image not found.'}
+     end
     end
   end
 
@@ -86,7 +91,7 @@ class ImagesController < ApplicationController
     @image.destroy
 
     respond_to do |format|
-      format.html { redirect_to images_url }
+      format.html { redirect_to images_url, :params => params }
       format.json { head :ok }
     end
   end
