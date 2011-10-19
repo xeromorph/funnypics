@@ -1,7 +1,7 @@
 <p id="notice"><%= notice %></p>
 <h1>Listing images</h1>
 
-<div id="paginator_top">
+<div class="paginator">
 <%= paginate @images, :remote => true %>
 </div>
 
@@ -21,7 +21,7 @@
 </tbody>
 </table>
 
-<div id="paginator_bot">
+<div class="paginator">
 <%= paginate @images, :remote => true %>
 </div>
 <br />

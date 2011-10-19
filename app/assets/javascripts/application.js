@@ -7,3 +7,12 @@
 //= require jquery
 //= require jquery_ujs
 //= require_tree .
+$(function () {
+  $('.paginator a').live('click', function () {
+    history.pushState(null, "", this.href);
+    return false;
+  });
+  $(window).bind("popstate", function () {
+    $.getScript(location.href);
+  });
+})
