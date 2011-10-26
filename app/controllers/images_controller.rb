@@ -4,11 +4,8 @@ class ImagesController < ApplicationController
   # GET /images
   # GET /images.json
   def index
-    @images = Image.includes(:tags).page(params[:page]).order("images.created_at desc")
-    if params[:tag]
-      @images = @images.where(["tags.name = ?",params[:tag]])
-    end
-    #@images = @images
+    default_view
+   #@images = @images
     #.paginate(:include => :tags, :page => params[:page], :per_page => 5)
     #else
     # @images = Image.paginate(:include => :tags, :page => params[:page], :per_page => 5)
@@ -89,9 +86,11 @@ class ImagesController < ApplicationController
   def destroy
     @image = Image.find(params[:id])
     @image.destroy
+#    default_view
 
     respond_to do |format|
-      format.html { redirect_to images_url, :params => params }
+      #format.html #{ redirect_to images_url, :params => params }
+      format.js { }
       format.json { head :ok }
     end
   end
@@ -128,5 +127,11 @@ class ImagesController < ApplicationController
   #params_clean: delete blank params items
   def params_clean
     params.delete_if {|k,v| v.blank?}
+  end
+  def default_view
+    @images = Image.includes(:tags).page(params[:page]).order("images.created_at desc")
+    if params[:tag]
+      @images = @images.where(["tags.name = ?",params[:tag]])
+    end
   end
 end

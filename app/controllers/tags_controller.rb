@@ -3,8 +3,8 @@ class TagsController < ApplicationController
   # GET /tags.json
   def index
     #@tags = Tag.all
-    @tags = Tag.joins(:taggings).select('tags.id,tags.name,count(taggings.image_id) as image_counter').group("tags.id").order('image_counter desc')
-
+    #@tags = Tag.joins(:taggings).select('tags.id,tags.name,count(taggings.image_id) as image_counter').group("tags.id").order('image_counter desc')
+    @tags = Tag.order('images_count desc')
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @tags }

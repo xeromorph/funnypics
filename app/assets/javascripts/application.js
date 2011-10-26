@@ -12,7 +12,7 @@ $(function () {
     history.pushState(null, "", this.href);
     return false;
   });
-  $(window).bind("popstate", function () {
+  $(window).bind('popstate', function () {
     $.getScript(location.href);
   });
 })

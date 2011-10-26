@@ -4,5 +4,6 @@ log/*.log
 tmp/
 .sass-cache/
 pub/
-public/assets/images/
+public/images/
+public/uploads/
 *.swp

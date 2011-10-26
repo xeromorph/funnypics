@@ -1,8 +1,9 @@
 <tr>
-  <td><%= link_to image_tag(image.img.url(:thumb)), image_path(image, :tag => params[:tag]) %></td>
+  <td><%= link_to image_tag(image.img_url(:thumb)), image_path(image, :tag => params[:tag]), :id => "image#{image.id}"%></td>
+  <td><%#= image_tag(image.img_url) %></td>
   <td><%= image.description %></td>
   <td><%= image.tag_names %></td>
   <td><%= link_to 'Show', image %></td>
   <td><%= link_to 'Edit', edit_image_path(image) %></td>
-  <td><%= link_to 'Destroy', image, confirm: 'Are you sure?', method: :delete %></td>
+  <td><%= link_to 'Destroy', image, :class => "delete_image", method: :delete, :remote => true , :confirm => "sure?" %></td>
 </tr>

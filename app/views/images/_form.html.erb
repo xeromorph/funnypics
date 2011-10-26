@@ -19,17 +19,16 @@
     <%= f.label :description %><br />
     <%= f.text_area :description %>
   </div>
- <%- #if params[:action] == 'new' or 'edit' -%>
- <% if %w{new create}.include? params[:action] %>
+ <%# if params[:action] == 'new' or 'edit' %>
+ <%# if %w{new create}.include? params[:action] %>
   <div class="field">
     <%= f.label :img %><br />
-    <%= f.file_field :img %>
+    <%= f.file_field :img if %w{new create}.include? params[:action] %>
+    <%= f.hidden_field :img_cache %>
+    <span>
+      <%= image_tag(@image.img_url(:thumb)) if @image.img? %>
+    </span>
   </div>
- <% else %>
-  <div style="margin:0;padding:0;display:inline">
-    <%= f.hidden_field :img %>
-  </div>
- <% end %>
   <div class="actions">
     <%= f.submit %>
   </div>
