@@ -35,5 +35,13 @@ gem 'therubyracer'
 
 group :test do
   # Pretty printed test output
+  gem 'guard-rspec', :require => false
+  gem 'rb-inotify', :require => false
+  #gem 'libnotify'
   gem 'turn', :require => false
+end
+
+group :test, :development do
+  gem 'rspec-rails'
+  gem 'factory_girl_rails'
 end

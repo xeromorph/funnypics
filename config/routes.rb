@@ -1,4 +1,6 @@
 Funnypics::Application.routes.draw do
+  resources :comments
+
   resources :images do
     post 'import', :on => :collection
   end
