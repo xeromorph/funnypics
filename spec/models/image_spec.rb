@@ -18,4 +18,22 @@ describe Image do
 
     it { should be_valid }
   end
+
+  describe 'is invalid with empty description' do
+    subject { build(:image, description: "") }
+
+    it { should_not be_valid }
+  end
+
+  describe 'is invalid without img' do
+    subject { build(:image, img: {}) }
+
+    it { should_not be_valid }
+  end
+  
+  describe 'is invalid without tags' do
+    subject { build(:image, tag_names: nil) }
+
+    it { should_not be_valid }
+  end
 end
