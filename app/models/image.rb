@@ -64,6 +64,6 @@ class Image < ActiveRecord::Base
   end
 
   def img_uniqueness
-    errors.add :img, "Image already exists in database" if Image.where(Image.arel_table[:img].matches("%#{self.img.md5}%")).any?
+    errors.add :img, "Image already exists in database" if self.img.present? and Image.where(Image.arel_table[:img].matches("%#{self.img.md5}%")).any?
   end
 end
