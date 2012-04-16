@@ -1,10 +1,7 @@
 Funnypics::Application.routes.draw do
-<<<<<<< Updated upstream
   resources :comments
 
-=======
   root :to => "images#index"
->>>>>>> Stashed changes
   resources :images do
     post 'import', :on => :collection
   end
