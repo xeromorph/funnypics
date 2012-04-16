@@ -16,4 +16,5 @@
 <%= link_to 'Prev', image_path(@image.prev(params[:tag]), :tag => params[:tag]) %>
 <br>
 <%= link_to 'Edit', edit_image_path(@image) %> |
-<%= link_to 'Back', images_path %>
+<%# link_to 'Back', :back %>
+<%= link_to 'Back', images_path(params.select{|k,v| %w{page tag}.include?(k) }) %>

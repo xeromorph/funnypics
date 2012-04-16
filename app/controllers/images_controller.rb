@@ -1,26 +1,13 @@
 class ImagesController < ApplicationController
-  before_filter :params_clean
+  before_filter :persist_params
+  respond_to :html, :js
 
-  # GET /images
-  # GET /images.json
   def index
     default_view
-   #@images = @images
-    #.paginate(:include => :tags, :page => params[:page], :per_page => 5)
-    #else
-    # @images = Image.paginate(:include => :tags, :page => params[:page], :per_page => 5)
-    #end
-    respond_to do |format|
-      format.html # index.html.erb
-      format.js
-      format.json { render json: @images }
-    end
+    respond_with @images
   end
 
-  # GET /images/1
-  # GET /images/1.json
   def show
-#    @image = Image.find(params[:id])
     @image = Image.find_by_id(params[:id])
     
     respond_to do |format|
@@ -33,8 +20,6 @@ class ImagesController < ApplicationController
     end
   end
 
-  # GET /images/new
-  # GET /images/new.json
   def new
     @image = Image.new
 
@@ -44,13 +29,10 @@ class ImagesController < ApplicationController
     end
   end
 
-  # GET /images/1/edit
   def edit
     @image = Image.find(params[:id])
   end
 
-  # POST /images
-  # POST /images.json
   def create
     @image = Image.new(params[:image])
 
@@ -65,8 +47,6 @@ class ImagesController < ApplicationController
     end
   end
 
-  # PUT /images/1
-  # PUT /images/1.json
   def update
     @image = Image.find(params[:id])
 
@@ -81,18 +61,23 @@ class ImagesController < ApplicationController
     end
   end
 
-  # DELETE /images/1
-  # DELETE /images/1.json
   def destroy
     @image = Image.find(params[:id])
     @image.destroy
-#    default_view
+    default_view
+    #@images.each {|i| puts i.id}
+    #puts @image.id
+    #puts @tag.to_s
+    #puts @page.to_s
+    #puts params
+    #@images.delete(@image)
 
-    respond_to do |format|
+    respond_with @images
+    #respond_to do |format|
       #format.html #{ redirect_to images_url, :params => params }
-      format.js { }
-      format.json { head :ok }
-    end
+     # format.js { }
+     # format.json { head :ok }
+    #end
   end
   
   def import
@@ -104,7 +89,7 @@ class ImagesController < ApplicationController
     imported_dir = "./pub/imported/"
     failed_dir = "./pub/failed/"
     Find.find(import_dir) do |file|
-      next unless File.file?(file) and file =~ /.*\.(jpe?g|gif|png)/i
+      next unless File.file?(file) and file =~ /\.(jpe?g|gif|png)$/i
       relative_path = file.sub(import_dir,"")
       relative_dir = File.dirname(relative_path)
       image = Image.new
@@ -122,16 +107,22 @@ class ImagesController < ApplicationController
     end
     redirect_to images_path, :notice => "#{image_count} images were mass imported"
   end
+  def url_options
+    {:tag => @tag, :page => @page}.merge(super)
+  end
 
   private
   #params_clean: delete blank params items
-  def params_clean
+  def persist_params
     params.delete_if {|k,v| v.blank?}
+    @page = params[:page] || 1
+    @tag = params[:tag]
   end
   def default_view
-    @images = Image.includes(:tags).page(params[:page]).order("images.created_at desc")
-    if params[:tag]
-      @images = @images.where(["tags.name = ?",params[:tag]])
+    @images = Image.order("images.created_at desc")
+    if @tag
+      @images = @images.includes(:tags).where(["tags.name = ?", @tag])
     end
+    @images = @images.page(@page)
   end
 end

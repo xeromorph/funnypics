@@ -1,6 +1,6 @@
 <tr>
-  <td><%= link_to image_tag(image.img_url(:thumb)), image_path(image, :tag => params[:tag]), :id => "image#{image.id}"%></td>
-  <td><%#= image_tag(image.img_url) %></td>
+  <%# link_to image_tag(image.img_url(:thumb)), image_path(image, :tag => params[:tag]), :id => "image#{image.id}"%>
+  <td><%= link_to image_tag(image.img_url(:thumb)), request.parameters.merge(:action => :show, :id => image.id), :id => "image#{image.id}"%></td>
   <td><%= image.description %></td>
   <td><%= image.tag_names %></td>
   <td><%= link_to 'Show', image %></td>

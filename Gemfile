@@ -12,6 +12,7 @@ gem 'sqlite3'
 gem 'mini_magick'
 gem 'carrierwave'
 gem 'kaminari'
+gem 'bourbon'
 
 # Gems used only for assets and not required
 # in production environments by default.
