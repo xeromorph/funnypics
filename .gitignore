@@ -7,3 +7,4 @@ pub/
 public/images/
 public/uploads/
 *.swp
+.rvmrc
