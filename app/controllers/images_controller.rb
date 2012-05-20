@@ -21,12 +21,7 @@ class ImagesController < ApplicationController
   end
 
   def new
-    @image = Image.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @image }
-    end
+    respond_with @image = Image.new
   end
 
   def edit
